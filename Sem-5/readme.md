@@ -15,18 +15,17 @@ This folder contains the Big Data Analytics (BDA) Lab exercises. The focus here 
 
 ## Repository Structure
 
-- **sem 4 labs/**: Contains the lab work from Semester 4.
-- **sem 5 labs/**: 
+- **sem 4 labs/**: Contains the lab work from Semester 4
+  - **ai lab/**: AI Lab exercises and code.
+  - **al lab/**: AL Lab exercises and code.
+  - **dbs lab/**: DBS Lab exercises and code.
+- **sem 5 labs/**: Contains the lab work from Semester 5
   - **ml lab/**: ML Lab exercises and code.
   - **cv lab/**: CV Lab exercises and code.
   - **bda lab/**: BDA Lab exercises and code.
   
 ## How to Use
 
-Each folder contains a README file (if applicable) that explains the specific lab exercises and instructions on how to run the code. Feel free to explore the folders to see the work done in each lab.
-
-## Contact
-
-If you have any questions or suggestions, feel free to reach out.
+Feel free to explore the folders to see the work done in each lab.
 
 Happy coding!
