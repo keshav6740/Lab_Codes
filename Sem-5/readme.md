@@ -13,16 +13,6 @@ This folder includes the work done in the Computer Vision (CV) Lab. The exercise
 ### 3. [BDA Lab](./BDA%20Lab)
 This folder contains the Big Data Analytics (BDA) Lab exercises. The focus here is on working with large datasets, utilizing tools such as Hadoop, Kafka, and other big data technologies.
 
-## Repository Structure
-
-- **sem 4 labs/**: Contains the lab work from Semester 4
-  - **ai lab/**: AI Lab exercises and code.
-  - **al lab/**: AL Lab exercises and code.
-  - **dbs lab/**: DBS Lab exercises and code.
-- **sem 5 labs/**: Contains the lab work from Semester 5
-  - **ml lab/**: ML Lab exercises and code.
-  - **cv lab/**: CV Lab exercises and code.
-  - **bda lab/**: BDA Lab exercises and code.
   
 ## How to Use
 
