@@ -4,7 +4,7 @@ Welcome to my Semester 5 Lab Codes repository. This section contains the work I 
 
 ## Lab Folders
 
-### 1. [ML Lab](./ML Lab)
+### 1. [ML Lab](./ML%20Lab)
 This folder contains the lab exercises and assignments for the Machine Learning (ML) Lab. The topics covered include supervised learning, unsupervised learning, and various machine learning algorithms and techniques.
 
 ### 2. [CV Lab](./cv%20lab)
