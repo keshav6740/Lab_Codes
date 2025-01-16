@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee CRUD Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .delete {
+            background-color: #f44336;
+        }
+        .delete:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+<body>
+    <h2>Employee CRUD Operations</h2>
+    
+    <h3>Add/Update Employee</h3>
+    <form id="employeeForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="position" placeholder="Position" required>
+        <button type="submit">Add/Update Employee</button>
+    </form>
+
+    <h3>Employee List</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>john@example.com</td>
+                <td>Developer</td>
+                <td>
+                    <button onclick="editEmployee(this)">Edit</button>
+                    <button class="delete" onclick="deleteEmployee(this)">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>jane@example.com</td>
+                <td>Designer</td>
+                <td>
+                    <button onclick="editEmployee(this)">Edit</button>
+                    <button class="delete" onclick="deleteEmployee(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // This is just a mock-up. In a real application, these functions would interact with a backend.
+        function editEmployee(button) {
+            const row = button.parentNode.parentNode;
+            document.getElementById('name').value = row.cells[0].innerText;
+            document.getElementById('email').value = row.cells[1].innerText;
+            document.getElementById('position').value = row.cells[2].innerText;
+        }
+
+        function deleteEmployee(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+</body>
+</html>
