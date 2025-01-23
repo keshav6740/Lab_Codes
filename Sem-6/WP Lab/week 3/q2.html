@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Greeting</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .clock {
+            font-size: 4em;
+            margin: 30px 0;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1.2em;
+            color: #ffffff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>Welcome to the Dynamic Greeting App!</h1>
+        <div id="clock" class="clock"></div>
+        <button id="greetButton">Get Greeting</button>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        function greetUser() {
+            const now = new Date();
+            const hours = now.getHours();
+            let greeting;
+
+            if (hours < 12) {
+                greeting = "Good Morning!";
+            } else if (hours < 18) {
+                greeting = "Good Afternoon!";
+            } else {
+                greeting = "Good Evening!";
+            }
+
+            const greetingElement = document.createElement('div');
+            greetingElement.textContent = greeting;
+            greetingElement.style.position = 'fixed';
+            greetingElement.style.top = '20px';
+            greetingElement.style.left = '50%';
+            greetingElement.style.transform = 'translateX(-50%)';
+            greetingElement.style.padding = '10px 20px';
+            greetingElement.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+            greetingElement.style.color = '#333';
+            greetingElement.style.borderRadius = '5px';
+            greetingElement.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            greetingElement.style.zIndex = '1000';
+            greetingElement.classList.add('fade-in');
+
+            document.body.appendChild(greetingElement);
+
+            setTimeout(() => {
+                greetingElement.style.opacity = '0';
+                greetingElement.style.transition = 'opacity 0.5s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(greetingElement);
+                }, 500);
+            }, 3000);
+        }
+
+        document.getElementById('greetButton').addEventListener('click', greetUser);
+        setInterval(updateClock, 1000);
+        updateClock(); // Initial call to display the clock immediately
+    </script>
+</body>
+</html>

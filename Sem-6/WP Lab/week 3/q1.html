@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #quiz {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center; /* Center the title */
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .correct {
+            color: green;
+        }
+        .wrong {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz">
+        <h1>Online Quiz</h1>
+        <div id="questions"></div>
+        <button id="submit">Submit</button>
+        <button id="restart" style="display: none;">Restart</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the largest mammal in the world?",
+                choices: ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"],
+                correct: 1
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                choices: ["Au", "Ag", "Fe", "Pb"],
+                correct: 0
+            },
+            {
+                question: "Which country is known as the Land of the Rising Sun?",
+                choices: ["China", "Japan", "Thailand", "South Korea"],
+                correct: 1
+            },
+            {
+                question: "What is the capital city of Australia?",
+                choices: ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+                correct: 2
+            },
+            {
+                question: "Which planet is known for its rings?",
+                choices: ["Earth", "Mars", "Saturn", "Jupiter"],
+                correct: 2
+            }
+        ];
+
+        let score = 0;
+        const questionsEl = document.getElementById("questions");
+        const submitBtn = document.getElementById("submit");
+        const restartBtn = document.getElementById("restart");
+        const resultEl = document.getElementById("result");
+
+        function loadQuestions() {
+            questionsEl.innerHTML = "";
+            quizData.forEach((question, index) => {
+                questionsEl.innerHTML += `
+                    <div>
+                        <h3>${index + 1}. ${question.question}</h3>
+                        ${question.choices.map((choice, i) => `
+                            <div>
+                                <input type="radio" id="q${index}c${i}" name="q${index}" value="${i}">
+                                <label for="q${index}c${i}">${choice}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            });
+        }
+
+        function checkAnswers() {
+            score = 0;
+            let resultHTML = "";
+            quizData.forEach((question, index) => {
+                const selectedChoice = document.querySelector(`input[name="q${index}"]:checked`);
+                const answer = selectedChoice ? parseInt(selectedChoice.value) : null;
+                if (answer === question.correct) {
+                    score++;
+                    resultHTML += `<p class="correct">${question.question} - Correct!</p>`;
+                } else {
+                    resultHTML += `<p class="wrong">${question.question} - Wrong! Correct answer: ${question.choices[question.correct]}</p>`;
+                }
+            });
+            resultEl.innerHTML = `You scored ${score} out of ${quizData.length}!<br>${resultHTML}`;
+            submitBtn.style.display = "none";
+            restartBtn.style.display = "inline";
+        }
+
+        function restartQuiz() {
+            loadQuestions();
+            resultEl.innerHTML = "";
+            submitBtn.style.display = "inline";
+            restartBtn.style.display = "none";
+        }
+
+        submitBtn.addEventListener("click", checkAnswers);
+        restartBtn.addEventListener("click", restartQuiz);
+        loadQuestions();
+    </script>
+</body>
+</html>

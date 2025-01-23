@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+        h1{
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button{
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background: #667eea;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grade Calculator</h1>
+        <input type="number" id="subject1" placeholder="Subject 1 Marks" required>
+        <input type="number" id="subject2" placeholder="Subject 2 Marks" required>
+        <input type="number" id="subject3" placeholder="Subject 3 Marks" required>
+        <input type="number" id="subject4" placeholder="Subject 4 Marks" required>
+        <button id="calculateButton">Calculate Grade</button>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        document.getElementById('calculateButton').addEventListener('click', function() {
+            const marks = [
+                parseFloat(document.getElementById('subject1').value),
+                parseFloat(document.getElementById('subject2').value),
+                parseFloat(document.getElementById('subject3').value),
+                parseFloat(document.getElementById('subject4').value)
+            ];
+            if (marks.some(isNaN)) {
+                alert('Please enter valid marks for all subjects.');
+                return;
+            }
+            const average = marks.reduce((a, b) => a + b, 0) / marks.length;
+            let grade;
+            if (average > 90) grade = 'A';
+            else if (average > 80) grade = 'B';
+            else if (average > 70) grade = 'C';
+            else if (average > 60) grade = 'D';
+            else grade = 'F';
+            document.getElementById('result').textContent = `Average: ${average.toFixed(2)}, Grade: ${grade}`;
+        });
+    </script>
+</body>
+</html>
