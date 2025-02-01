@@ -1,51 +1,44 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <mpi.h>
+#include "mpi.h"
 
-#define N 4  // Matrix is 4x4
-
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int rank, size;
-    int matrix[N][N];  
-    int row[N];         
+    int mat[4][4], share[4], newarr[4];
 
-    MPI_Init(&argc, &argv);                     
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);       
-    MPI_Comm_size(MPI_COMM_WORLD, &size);     
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    if (size != N) {
-        if (rank == 0)
-            printf("Error: This program requires exactly %d processes.\n", N);
-        MPI_Abort(MPI_COMM_WORLD, 1);
-    }
-
-    if (rank == 0) {
-        printf("Enter %d integers for a %dx%d matrix (row by row):\n", N * N, N, N);
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                scanf("%d", &matrix[i][j]);
+    if (rank == 0)
+    {
+        printf("Process %d: Entering matrix input phase.\n", rank);
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                printf("Enter Element [%d][%d]: ", i, j);
+                scanf("%d", &mat[i][j]);
             }
         }
+        printf("Process %d: Matrix input complete.\n", rank);
     }
-
-    MPI_Scatter(matrix, N, MPI_INT, row, N, MPI_INT, 0, MPI_COMM_WORLD);
-    for (int j = 0; j < N; j++) {
-        row[j] += j + rank;
+    MPI_Scatter(&mat, 4, MPI_INT, &share, 4, MPI_INT, 0, MPI_COMM_WORLD);
+    printf("Process %d: Received data from MPI_Scatter: ", rank);
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%d ", share[i]);
     }
+    printf("\n");
+    MPI_Scan(&share, newarr, 4, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
 
-    int result_matrix[N][N];
-    MPI_Gather(row, N, MPI_INT, result_matrix, N, MPI_INT, 0, MPI_COMM_WORLD);
-
-    if (rank == 0) {
-        printf("Transformed matrix:\n");
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                printf("%d ", result_matrix[i][j]);
-            }
-            printf("\n");
-        }
+    printf("Process %d: Result after MPI_Scan: ", rank);
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%d ", newarr[i]);
     }
+    printf("\n");
 
-    MPI_Finalize();  // Finalize MPI
+    MPI_Finalize();
     return 0;
 }
