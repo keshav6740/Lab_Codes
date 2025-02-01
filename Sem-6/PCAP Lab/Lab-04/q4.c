@@ -7,55 +7,56 @@
 
 int main(int argc, char *argv[]) {
     int rank, size;
-    char input_word[MAX_LEN];
-    
+    char input_word[MAX_LEN], local_result[MAX_LEN] = {0};
+    int word_length;
+
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    
+
     if (rank == 0) {
         printf("Enter a word of length %d: ", size);
         fflush(stdout);
         scanf("%s", input_word);
-        
-        if (strlen(input_word) != (size_t)size) {
-            printf("Error: The length of the input word must be %d.\n", size);
+        word_length = strlen(input_word);
+
+        if (word_length != size) {
+            fprintf(stderr, "Error: Word must be exactly %d characters long.\n", size);
             MPI_Abort(MPI_COMM_WORLD, 1);
         }
+
+        printf("Rank 0: Broadcast the word \"%s\" to all processes\n", input_word);
     }
-    
+
     MPI_Bcast(input_word, MAX_LEN, MPI_CHAR, 0, MPI_COMM_WORLD);
-    char local_result[MAX_LEN];
-    memset(local_result, 0, MAX_LEN);
-    
-    for (int i = 0; i < rank + 1; i++) {
-        strncat(local_result, &input_word[rank], 1);
+    printf("Rank %d: Received the word \"%s\" from rank 0\n", rank, input_word);
+    memset(local_result, input_word[rank], rank + 1);
+    printf("Rank %d: Local result is \"%s\"\n", rank, local_result);
+    char *gathered = (rank == 0) ? malloc(size * MAX_LEN) : NULL;
+
+    if (rank != 0) {
+        printf("Rank %d: Sending local result to rank 0\n", rank);
+        MPI_Send(local_result, MAX_LEN, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
     }
-    
+
     if (rank == 0) {
-        gathered = (char *)malloc(MAX_LEN * size * sizeof(char));
-        if (gathered == NULL) {
-            fprintf(stderr, "Memory allocation failed on root process.\n");
-            MPI_Abort(MPI_COMM_WORLD, 1);
+        for (int i = 1; i < size; i++) {
+            printf("Rank 0: Receiving result from rank %d\n", i);
+            MPI_Recv(gathered + i * MAX_LEN, MAX_LEN, MPI_CHAR, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
-        memset(gathered, 0, MAX_LEN * size);
-    }
-    
-    MPI_Gather(local_result, MAX_LEN, MPI_CHAR,
-               gathered, MAX_LEN, MPI_CHAR, 0, MPI_COMM_WORLD);
-    
-    if (rank == 0) {
-        char final_output[MAX_LEN * size];
-        final_output[0] = '\0';  
-        
+
+        char *final_output = malloc(MAX_LEN * size + 1);
+        memset(final_output, 0, MAX_LEN * size + 1);  
+
         for (int i = 0; i < size; i++) {
-            char *block = gathered + i * MAX_LEN;
-            strcat(final_output, block);
+            strncat(final_output, gathered + i * MAX_LEN, MAX_LEN);
         }
-        printf("Output: %s\n", final_output);
+
+        printf("Rank 0: Final Output: %s\n", final_output);
+        free(final_output);
         free(gathered);
     }
-    
+
     MPI_Finalize();
     return 0;
 }
