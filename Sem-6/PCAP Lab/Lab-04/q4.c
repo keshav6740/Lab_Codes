@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]) {
     int rank, size;
-    char input_word[MAX_LEN], local_result[MAX_LEN] = {0};
+    char input_word[MAX_LEN] = {0}, local_result[MAX_LEN] = {0};
     int word_length;
 
     MPI_Init(&argc, &argv);
@@ -25,23 +25,26 @@ int main(int argc, char *argv[]) {
             MPI_Abort(MPI_COMM_WORLD, 1);
         }
 
-        printf("Rank 0: Broadcast the word \"%s\" to all processes\n", input_word);
     }
 
     MPI_Bcast(input_word, MAX_LEN, MPI_CHAR, 0, MPI_COMM_WORLD);
-    printf("Rank %d: Received the word \"%s\" from rank 0\n", rank, input_word);
-    memset(local_result, input_word[rank], rank + 1);
+    for (int i = 0; i <= rank; i++) {
+        local_result[i] = input_word[rank]; // Fill local_result with the character
+    }
+    local_result[rank + 1] = '\0'; 
+
+
     printf("Rank %d: Local result is \"%s\"\n", rank, local_result);
     char *gathered = (rank == 0) ? malloc(size * MAX_LEN) : NULL;
 
     if (rank != 0) {
-        printf("Rank %d: Sending local result to rank 0\n", rank);
         MPI_Send(local_result, MAX_LEN, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+    } else {
+        strncpy(gathered, local_result, MAX_LEN);
     }
 
     if (rank == 0) {
         for (int i = 1; i < size; i++) {
-            printf("Rank 0: Receiving result from rank %d\n", i);
             MPI_Recv(gathered + i * MAX_LEN, MAX_LEN, MPI_CHAR, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
 
@@ -60,3 +63,5 @@ int main(int argc, char *argv[]) {
     MPI_Finalize();
     return 0;
 }
+
+
