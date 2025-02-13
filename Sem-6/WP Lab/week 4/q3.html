@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card Designer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+        .controls {
+            background:#fdff6f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            width: 300px;
+            height: 490px;
+            text-align: center;
+            padding: 20px;
+            border: 5px double black;
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 150px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        textarea, select, input {
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .radio-group, .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        button {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #d81b60;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <label>Choose a background color:</label>
+            <select id="bgColor">
+                <option value="yellow">Yellow</option>
+                <option value="pink">Pink</option>
+                <option value="lightblue">Light Blue</option>
+            </select>
+            <br>
+            <label>Choose a font:</label>
+            <select id="font">
+                <option value="Verdana">Verdana</option>
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+            </select>
+            <br>
+            <label>Specify a numeric font size:</label>
+            <input type="number" id="fontSize" value="25">
+            <br>
+            <label>Choose a border style:</label>
+            <div class="radio-group">
+                <input type="radio" name="border" value="none"> None
+                <input type="radio" name="border" value="double" checked> Double
+                <input type="radio" name="border" value="solid"> Solid
+            </div>
+            <br>
+            <div class="checkbox-group">
+                <input type="checkbox" id="defaultImage" checked> <label for="defaultImage">Add the Default Picture</label>
+            </div>
+            <br>
+            <label>Enter the greeting text below:</label>
+            <textarea id="greeting">Happy Birthday, and many more</textarea>
+            <br>
+            <button id="update">Update</button>
+        </div>
+        <div class="card" id="card">
+            <h2 id="message">Happy Birthday, and many more</h2>
+            <img id="cardImage" src="./q3.jpg" alt="Birthday Cake">
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#update").click(function() {
+                $("#card").css("background-color", $("#bgColor").val());
+                $("#message").css({
+                    "font-family": $("#font").val(),
+                    "font-size": $("#fontSize").val() + "px"
+                });
+                $("#message").text($("#greeting").val());
+                let borderStyle = $("input[name='border']:checked").val();
+                $("#card").css("border", borderStyle === "none" ? "none" : "5px " + borderStyle + " black");
+                if($("#defaultImage").is(":checked")) {
+                    $("#cardImage").show();
+                } else {
+                    $("#cardImage").hide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
