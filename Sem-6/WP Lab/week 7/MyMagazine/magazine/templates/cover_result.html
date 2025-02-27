@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Generated Magazine Cover</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 0; text-align: center;">
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <header>
+            <h1 style="font-size: 3rem; color: #333;">Your Magazine Cover</h1>
+            <p style="font-size: 1.2rem; color: #555;">Here's your custom magazine cover. Feel free to create another!</p>
+        </header>
+
+        <main>
+            <div class="cover" style="background-color: {{ background_color }}; color: {{ font_color }}; font-size: {{ font_size }}px; font-family: {{ font_family }}; position: relative; width: 600px; height: 800px; margin: 20px auto; padding: 50px; border-radius: 10px; text-align: center; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);">
+                <h2 style="position: absolute; top: 20%; left: 50%; transform: translateX(-50%); font-size: 3rem; font-weight: bold; color: inherit; margin: 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);">{{ title }}</h2>
+                {% if cover.image %}
+                    <img src="{{ uploaded_file_url }}" alt="Magazine Cover Image" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 100%; max-height: 60%; border-radius: 10px;">
+                {% endif %}
+            </div>
+
+            <a href="{% url 'generate_cover' %}" style="background-color: #008CBA; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 1.1rem;">Create Another Cover</a>
+        </main>
+    </div>
+
+</body>
+</html>

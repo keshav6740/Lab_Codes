@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Magazine Cover</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f0f0f0; margin: 0; padding: 0; text-align: center;">
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <header>
+            <h1 style="font-size: 3rem; color: #333;">Generate Your Magazine Cover</h1>
+            <p style="font-size: 1.2rem; color: #555;">Fill out the form below to create your custom magazine cover!</p>
+        </header>
+
+        <main>
+            <form method="POST" enctype="multipart/form-data" action= "{% url 'generate_cover' %}" style="background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); display: grid; gap: 20px; max-width: 600px; margin: 0 auto;">
+                {% csrf_token %}
+
+                <label for="image" style="font-weight: bold; font-size: 1.1rem;">Upload Cover Image:</label>
+                <input type="file" name="image" accept="image/*" required style="padding: 5px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+
+                <label for="background_color" style="font-weight: bold; font-size: 1.1rem;">Select Background Color:</label>
+                <input type="color" name="background_color" value="#ffffff" required style="padding: 5px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+
+                <label for="font_color" style="font-weight: bold; font-size: 1.1rem;">Select Font Color:</label>
+                <input type="color" name="font_color" value="#000000" required style="padding: 5px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+
+                <label for="font_size" style="font-weight: bold; font-size: 1.1rem;">Font Size (px):</label>
+                <input type="number" name="font_size" value="48" min="10" max="100" required style="padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+
+                <label for="font_family" style="font-weight: bold; font-size: 1.1rem;">Select Font Family:</label>
+                <select name="font_family" required style="padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Georgia">Georgia</option>
+                </select>
+
+                <label for="title" style="font-weight: bold; font-size: 1.1rem;">Magazine Title:</label>
+                <input type="text" name="title" placeholder="Enter title here" required style="padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+
+                <button type="submit" style="background-color: #008CBA; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 1.1rem;">Generate Cover</button>
+            </form>
+        </main>
+    </div>
+
+</body>
+</html>
